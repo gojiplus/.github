@@ -1,4 +1,4 @@
-## GojiPlus
+## gojiplus
 
 🛠️ **Package development**: [Python package checks](https://github.com/gojiplus/preen), [Python standards and workflows](https://github.com/gojiplus/py-canon), [R standards and workflows](https://github.com/gojiplus/r-canon), [Sphinx documentation for R](https://github.com/gojiplus/rd2sphinx), [package attestation badges](https://github.com/gojiplus/notary), etc.
 
