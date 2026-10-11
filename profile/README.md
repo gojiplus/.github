@@ -8,7 +8,7 @@
 
 📊 **Tabular data**: [Statistical questions and answers from tables](https://github.com/gojiplus/statqa), [Learning table knowledge](https://github.com/gojiplus/tabula-rasa), [Disambiguating records](https://github.com/gojiplus/rowvoi), [Bloom-filter joins](https://github.com/gojiplus/bloomjoin), [Data frames with persistent metadata](https://github.com/gojiplus/superdf), etc.
 
-📖 **Reading, text, and OCR**: [Academic papers to audio](https://github.com/gojiplus/paper_voice), [Audiobooks and reading tools](https://github.com/gojiplus/reader), [Combining Wikipedia across languages](https://github.com/gojiplus/wikifuse), [OCR](https://github.com/gojiplus/image-to-text), [OCR quality assessment](https://github.com/gojiplus/recognize), [Approximate search and replace](https://github.com/gojiplus/search-and-replace), etc.
+📖 **Reading, text, and OCR**: [Academic papers to audio](https://github.com/gojiplus/paper_voice), [Audiobooks and reading tools](https://github.com/gojiplus/reader), [Combining Wikipedia across languages](https://github.com/gojiplus/wikifuse), [OCR](https://github.com/gojiplus/image-to-text), [Approximate search and replace](https://github.com/gojiplus/search-and-replace), etc.
 
 🌐 **Data access**: [YouTube](https://github.com/gojiplus/tuber), [YouTube Analytics and Reporting](https://github.com/gojiplus/tubern), [Weather by zip code](https://github.com/gojiplus/get-weather-data), [Life tables](https://github.com/gojiplus/lost-years), etc.
 
