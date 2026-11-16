@@ -1,0 +1,72 @@
+# The fleet's web link check, for every language.
+#
+# lychee fetches every http(s) link in the given files. Links within the repo
+# are checked offline on each commit by lychee's pre-commit hook; this is the
+# slow, network-bound half, meant to run weekly (external links rot without
+# anyone committing) and on push to the default branch.
+#
+# Exclusions live in the calling repo's lychee.toml, which lychee reads from
+# the working directory -- the checkout root here -- as do preen and the
+# pre-commit hook. There is deliberately no `exclude` input: a second list
+# would drift from the first.
+
+name: reusable-link-check
+
+on:
+  workflow_call:
+    inputs:
+      paths:
+        description: >
+          Files to scan, one glob per line. These must be globs: `lychee docs/`
+          matches nothing, reports it as a warning rather than an error, and
+          exits 0 -- a bare directory name reads as a passing check over zero
+          links.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Built here rather than interpolated into the action's `args` directly,
+      # so a glob containing a space survives as one argument.
+      - name: Assemble the lychee arguments
+        id: args
+        env:
+          PATHS: ${{ inputs.paths }}
+        run: |
+          set -euo pipefail
+          args=""
+          while IFS= read -r path; do
+            [ -n "$path" ] || continue
+            args="$args '$path'"
+          done <<< "$PATHS"
+          printf 'value=%s\n' "$args" >> "$GITHUB_OUTPUT"
+
+      - name: Check links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          # The accepted codes match preen's `links` check: 400 (an API base
+          # answering a bare GET), 401/403/405 (auth and anti-bot walls) and
+          # 429 (rate limit) say nothing about whether the page exists for a
+          # reader. Everything else outside 2xx fails, including a 5xx that
+          # survives three retries. No --cache: it writes .lycheecache into the
+          # repo root, which every repo would then have to ignore.
+          args: >-
+            --no-progress
+            --max-retries 3
+            --accept 200..=299,400,401,403,405,429
+            ${{ steps.args.outputs.value }}
+          fail: true
+          # A glob that goes stale stops matching silently; this catches the
+          # whole set going stale, which would otherwise pass over nothing.
+          failIfEmpty: true
+          jobSummary: true
